@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html ng-app='app'>
+<head>
+	<meta charset="UTF-8">
+	<title>AngularJs-Note</title>
+	<link rel="stylesheet" href="css/index.css">
+	<script src='js/angular.min.js'></script>
+	<script src='js/index.js'></script>
+</head>
+<body ng-controller='c'>
+	<div class="left">
+		<div class="title">
+			iCloud
+			<span>提醒事项</span>
+			<span>^</span>
+			<span class='add' ng-click='add()'>+</span>
+		</div>
+		<ul class="content">
+			<li class="top">
+				<img src="image/1.png" alt="">
+				已计划
+			</li>
+			<li ng-repeat='v in data' ng-click="select($index)" ng-style="{background:$index==index?'#2C2C2A':'#383836'}">
+				<span class='dian' style="background:{{v.color}};"></span>
+				<div class="con">{{v.title}}</div>
+				<img src="image/wifi.png" alt="" class="images">
+			</li>
+		</ul>
+	</div>
+	<div class="right">
+		<div class="searchbox">
+			<img src="image/2.png" alt="">
+			<input type="text" placeholder='搜索所有提醒'>
+			<span class='name'>MyName</span>
+			<span class='more'>^</span>
+			<span class='xian'>|</span>
+		</div>
+		<div class="head">
+			<div ng-style='{color:data[index].color}'>
+				{{data[index].title}}
+				<span class='option' ng-click="option()">选项</span>
+			</div>
+			<div class="optionbox" ng-show='showFlag'>
+				<div class="box">
+					<input type="text" ng-model='changeTitle' ng-style='{color:changeColor}'>
+					<div class="xian">列表颜色</div>
+					<ul>
+						<li ng-repeat='v in colors' ng-style="{background:v,borderColor:v==changeColor?changeColor:''}" ng-click='changeC(v)'></li>
+					</ul>
+				</div>
+				<div class="bottom">
+					<span class='del' ng-click='del($index)'>删除</span>
+					<span class='quxiao' ng-click="showFlag=false">取消</span>
+					<span class='done' ng-click='complete()'>完成</span>
+				</div>
+			</div>
+		</div>
+		<ul>
+			<li class="title">
+			已完成
+			{{(data[index].todo|filter:{done:'true'}).length}}
+			项
+			</li>
+			<li class="con" ng-repeat="k in data[index].todo|filter:{done:'true'}" contenteditable='true' ng-blur='changeTitle($event,k)'>
+				<span class='zhuangtai' ng-style="{background:data[index].color,borderColor:data[index].color}" ng-click='k.done=false' contenteditable='false'></span>
+				{{k.t}}
+			</li>
+		</ul>
+		<ul>
+			<li class="title">未完成
+			{{(data[index].todo|filter:{done:'false'}).length}}
+			项</li>
+			<li class="con" ng-repeat="k in data[index].todo|filter:{done:'false'}" contenteditable='true' ng-blur='changeTitle($event,k)'>
+				<span class='zhuangtai' ng-style="{background:transparent,borderColor:data[index].color}" ng-click='k.done=true' contenteditable='false'></span>
+				{{k.t}}
+			</li>
+		</ul>
+		<ul>
+			<li class="con" ng-click='newTitle()'>新项目...</li>
+		</ul>
+	</div>
+	<div class="showMack" ng-show='showFlag' ng-click='showFlag=false'></div>
+</body>
+</html>
